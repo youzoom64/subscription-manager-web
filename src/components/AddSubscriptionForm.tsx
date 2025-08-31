@@ -7,6 +7,7 @@ import {
   PAYMENT_CYCLES,
   PaymentCycle,
 } from "@/types/subscription";
+import { POPULAR_SERVICES, SERVICE_CATEGORIES } from "@/data/popularServices";
 
 interface AddSubscriptionFormProps {
   isOpen: boolean;
@@ -26,6 +27,8 @@ export default function AddSubscriptionForm({
   cards,
   onAdd,
 }: AddSubscriptionFormProps) {
+  const [selectedService, setSelectedService] = useState("");
+  const [customMode, setCustomMode] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     price: 0,
@@ -37,6 +40,48 @@ export default function AddSubscriptionForm({
   });
 
   if (!isOpen) return null;
+
+  const handleServiceSelect = (serviceName: string) => {
+    if (serviceName === "custom") {
+      setCustomMode(true);
+      setSelectedService("");
+      setFormData({
+        name: "",
+        price: 0,
+        paymentDay: 1,
+        paymentCycle: PaymentCycle.MONTHLY,
+        startMonth: "",
+        cardId: "",
+        url: "",
+      });
+    } else if (serviceName) {
+      setCustomMode(false);
+      setSelectedService(serviceName);
+      const service =
+        POPULAR_SERVICES[serviceName as keyof typeof POPULAR_SERVICES];
+      setFormData({
+        name: serviceName,
+        price: service.price,
+        paymentDay: 1,
+        paymentCycle: service.cycle as PaymentCycle,
+        startMonth: "",
+        cardId: "",
+        url: service.url,
+      });
+    } else {
+      setCustomMode(false);
+      setSelectedService("");
+      setFormData({
+        name: "",
+        price: 0,
+        paymentDay: 1,
+        paymentCycle: PaymentCycle.MONTHLY,
+        startMonth: "",
+        cardId: "",
+        url: "",
+      });
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +108,8 @@ export default function AddSubscriptionForm({
     onAdd(newSubscription);
 
     // フォームリセット
+    setSelectedService("");
+    setCustomMode(false);
     setFormData({
       name: "",
       price: 0,
@@ -78,9 +125,22 @@ export default function AddSubscriptionForm({
 
   const showStartMonth = formData.paymentCycle !== PaymentCycle.MONTHLY;
 
+  // サービスをカテゴリ別にグループ化
+  const groupedServices = Object.entries(POPULAR_SERVICES).reduce(
+    (acc, [name, service]) => {
+      const category = service.category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(name);
+      return acc;
+    },
+    {} as Record<string, string[]>
+  );
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">新規サブスクリプション追加</h2>
           <button
@@ -92,6 +152,45 @@ export default function AddSubscriptionForm({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* サービス選択 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              サービス選択
+            </label>
+            <select
+              value={customMode ? "custom" : selectedService}
+              onChange={(e) => handleServiceSelect(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">サービスを選択してください</option>
+              {Object.entries(groupedServices).map(([category, services]) => (
+                <optgroup
+                  key={category}
+                  label={`${
+                    SERVICE_CATEGORIES[
+                      category as keyof typeof SERVICE_CATEGORIES
+                    ]
+                  } ${category}`}
+                >
+                  {services.map((serviceName) => (
+                    <option key={serviceName} value={serviceName}>
+                      {serviceName} - ¥
+                      {POPULAR_SERVICES[
+                        serviceName as keyof typeof POPULAR_SERVICES
+                      ].price.toLocaleString()}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+              <option value="custom">📝 カスタムサービスを入力</option>
+            </select>
+            {selectedService && (
+              <p className="text-xs text-green-600 mt-1">
+                ✓ 料金とサイクルが自動入力されました
+              </p>
+            )}
+          </div>
+
           {/* サービス名 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -106,6 +205,7 @@ export default function AddSubscriptionForm({
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="例: Spotify Premium"
               required
+              disabled={!customMode && selectedService !== ""}
             />
           </div>
 
@@ -127,6 +227,7 @@ export default function AddSubscriptionForm({
               min="0"
               placeholder="980"
               required
+              disabled={!customMode && selectedService !== ""}
             />
           </div>
 
@@ -165,6 +266,7 @@ export default function AddSubscriptionForm({
                 }))
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={!customMode && selectedService !== ""}
             >
               {Object.entries(PAYMENT_CYCLES).map(([key, cycle]) => (
                 <option key={key} value={key}>
@@ -234,7 +336,13 @@ export default function AddSubscriptionForm({
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="https://..."
+              disabled={!customMode && selectedService !== ""}
             />
+            {selectedService && formData.url && (
+              <p className="text-xs text-blue-600 mt-1">
+                🔗 公式サイトのURLが自動入力されました
+              </p>
+            )}
           </div>
 
           {/* ボタン */}
@@ -254,6 +362,15 @@ export default function AddSubscriptionForm({
             </button>
           </div>
         </form>
+
+        {selectedService && (
+          <div className="mt-4 p-3 bg-blue-50 rounded-md">
+            <p className="text-sm text-blue-800">
+              💡 <strong>{selectedService}</strong> の情報が自動入力されました。
+              必要に応じて支払日や支払いカードを調整してください。
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
