@@ -161,7 +161,7 @@ export default function AddSubscriptionForm({
             <select
               value={customMode ? "custom" : selectedService}
               onChange={(e) => handleServiceSelect(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             >
               <option value="">サービスを選択してください</option>
               {Object.entries(groupedServices).map(([category, services]) => (
@@ -203,7 +203,7 @@ export default function AddSubscriptionForm({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="例: Spotify Premium"
               required
             />
@@ -223,7 +223,7 @@ export default function AddSubscriptionForm({
                   price: parseInt(e.target.value) || 0,
                 }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               min="0"
               placeholder="980"
               required
@@ -244,7 +244,7 @@ export default function AddSubscriptionForm({
                   paymentDay: parseInt(e.target.value) || 1,
                 }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               min="1"
               max="31"
               required
@@ -264,7 +264,7 @@ export default function AddSubscriptionForm({
                   paymentCycle: e.target.value as PaymentCycle,
                 }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             >
               {Object.entries(PAYMENT_CYCLES).map(([key, cycle]) => (
                 <option key={key} value={key}>
@@ -310,7 +310,7 @@ export default function AddSubscriptionForm({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, cardId: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             >
               <option value="">カードを選択</option>
               {cards.map((card) => (
@@ -332,7 +332,7 @@ export default function AddSubscriptionForm({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, url: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="https://..."
             />
             {selectedService && formData.url && (
