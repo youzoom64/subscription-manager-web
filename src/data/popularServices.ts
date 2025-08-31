@@ -70,6 +70,129 @@ export const POPULAR_SERVICES = {
     url: "https://www.amazon.co.jp/prime",
   },
 
+  "Disney+ スタンダード": {
+    price: 990,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.disneyplus.com/ja-jp",
+  },
+  "Disney+ プレミアム": {
+    price: 1320,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.disneyplus.com/ja-jp",
+  },
+  "Disney+ スタンダード 年額": {
+    price: 9900,
+    cycle: "YEARLY",
+    category: "動画配信",
+    url: "https://www.disneyplus.com/ja-jp",
+  },
+  "Disney+ プレミアム 年額": {
+    price: 13200,
+    cycle: "YEARLY",
+    category: "動画配信",
+    url: "https://www.disneyplus.com/ja-jp",
+  },
+
+  Hulu: {
+    price: 1026,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.hulu.jp/",
+  },
+
+  "U-NEXT": {
+    price: 2189,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://video.unext.jp/",
+  },
+
+  "Abema プレミアム": {
+    price: 960,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://abema.tv/",
+  },
+
+  dTV: {
+    price: 550,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://video.dmkt-sp.jp/",
+  },
+
+  "FOD プレミアム": {
+    price: 976,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://fod.fujitv.co.jp/",
+  },
+
+  Paravi: {
+    price: 1017,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.paravi.jp/",
+  },
+
+  WATCHA: {
+    price: 869,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://watcha.com/",
+  },
+
+  dアニメストア: {
+    price: 550,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://animestore.docomo.ne.jp/",
+  },
+
+  バンダイチャンネル: {
+    price: 1100,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.b-ch.com/",
+  },
+
+  Crunchyroll: {
+    price: 960,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.crunchyroll.com/",
+  },
+
+  "AppleTV+": {
+    price: 900,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://tv.apple.com/jp",
+  },
+
+  WOWOWオンデマンド: {
+    price: 2530,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.wowow.co.jp/",
+  },
+
+  "スカパー! 基本プラン": {
+    price: 3960,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://www.skyperfectv.co.jp/",
+  },
+
+  "TVer プレミアム": {
+    price: 600,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://tver.jp/",
+  },
+
   // 音楽配信サービス
   "Spotify Premium 個人": {
     price: 980,
