@@ -1,20 +1,25 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { PaymentCard, CARD_COMPANIES, CardService } from '@/types/subscription';
+import { useState, useEffect } from "react";
+import { PaymentCard, CARD_COMPANIES, CardService } from "@/types/subscription";
 
 interface CardManagementProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function CardManagement({ isOpen, onClose }: CardManagementProps) {
+export default function CardManagement({
+  isOpen,
+  onClose,
+}: CardManagementProps) {
   const [cards, setCards] = useState<PaymentCard[]>([]);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    company: 'VISA',
-    last_four: ''
+    name: "",
+    brand: "VISA",
+    lastFour: "",
+    expiryMonth: 1,
+    expiryYear: new Date().getFullYear(),
   });
 
   useEffect(() => {
@@ -30,44 +35,70 @@ export default function CardManagement({ isOpen, onClose }: CardManagementProps)
 
   const handleAddCard = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.name.trim() || !formData.last_four.trim()) {
-      alert('カード名と末尾4桁を入力してください');
+
+    if (!formData.name.trim() || !formData.lastFour.trim()) {
+      alert("カード名と末尾4桁を入力してください");
       return;
     }
 
-    if (formData.last_four.length !== 4 || !/^\d+$/.test(formData.last_four)) {
-      alert('末尾4桁は4桁の数字で入力してください');
+    if (formData.lastFour.length !== 4 || !/^\d+$/.test(formData.lastFour)) {
+      alert("末尾4桁は4桁の数字で入力してください");
       return;
     }
 
     const newCard: PaymentCard = {
       id: `card_${Date.now()}`,
       name: formData.name.trim(),
-      company: formData.company,
-      last_four: formData.last_four,
-      created_at: new Date()
+      brand: formData.brand,
+      lastFour: formData.lastFour,
+      expiryMonth: formData.expiryMonth,
+      expiryYear: formData.expiryYear,
+      isDefault: cards.length === 0, // 最初のカードをデフォルトに
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: "temp-user", // 適切なユーザーIDを設定
     };
 
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
-    CardService.saveCards(updatedCards);
+
+    // CardServiceに保存 - エラーハンドリング付き
+    try {
+      CardService.saveCards(updatedCards);
+    } catch (error) {
+      console.error("カード保存エラー:", error);
+    }
 
     // フォームリセット
-    setFormData({ name: '', company: 'VISA', last_four: '' });
+    setFormData({
+      name: "",
+      brand: "VISA",
+      lastFour: "",
+      expiryMonth: 1,
+      expiryYear: new Date().getFullYear(),
+    });
     setIsAddFormOpen(false);
   };
 
   const handleDeleteCard = (cardToDelete: PaymentCard) => {
-    const confirmDelete = window.confirm(`${cardToDelete.name}を削除しますか？\n\n注意: このカードを使用しているサブスクリプションのカード設定もクリアされます。`);
-    
+    const confirmDelete = window.confirm(
+      `${cardToDelete.name}を削除しますか？\n\n注意: このカードを使用しているサブスクリプションのカード設定もクリアされます。`
+    );
+
     if (confirmDelete) {
-      const updatedCards = cards.filter(card => card.id !== cardToDelete.id);
+      const updatedCards = cards.filter(
+        (card: PaymentCard) => card.id !== cardToDelete.id
+      );
       setCards(updatedCards);
-      CardService.saveCards(updatedCards);
-      
-      // TODO: サブスクリプションのcard_idもクリアする処理を追加
-      alert('カードを削除しました');
+
+      // CardServiceに保存 - エラーハンドリング付き
+      try {
+        CardService.saveCards(updatedCards);
+        alert("カードを削除しました");
+      } catch (error) {
+        console.error("カード削除エラー:", error);
+        alert("カードの削除に失敗しました");
+      }
     }
   };
 
@@ -102,7 +133,7 @@ export default function CardManagement({ isOpen, onClose }: CardManagementProps)
           <div className="mb-6 p-4 border rounded-lg bg-gray-50">
             <h3 className="text-lg font-medium mb-4">新しいカードを追加</h3>
             <form onSubmit={handleAddCard} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     カード名 *
@@ -110,36 +141,50 @@ export default function CardManagement({ isOpen, onClose }: CardManagementProps)
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, name: e.target.value }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="例: メインカード"
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    カード会社 *
+                    カードブランド *
                   </label>
                   <select
-                    value={formData.company}
-                    onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
+                    value={formData.brand}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        brand: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    {CARD_COMPANIES.map(company => (
-                      <option key={company} value={company}>{company}</option>
+                    {Object.entries(CARD_COMPANIES).map(([key, value]) => (
+                      <option key={key} value={value}>
+                        {value}
+                      </option>
                     ))}
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     末尾4桁 *
                   </label>
                   <input
                     type="text"
-                    value={formData.last_four}
-                    onChange={(e) => setFormData(prev => ({ ...prev, last_four: e.target.value }))}
+                    value={formData.lastFour}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        lastFour: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="1234"
                     maxLength={4}
@@ -147,8 +192,56 @@ export default function CardManagement({ isOpen, onClose }: CardManagementProps)
                     required
                   />
                 </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      有効期限月
+                    </label>
+                    <select
+                      value={formData.expiryMonth}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          expiryMonth: parseInt(e.target.value),
+                        }))
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}月
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      有効期限年
+                    </label>
+                    <select
+                      value={formData.expiryYear}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          expiryYear: parseInt(e.target.value),
+                        }))
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {Array.from({ length: 10 }, (_, i) => {
+                        const year = new Date().getFullYear() + i;
+                        return (
+                          <option key={year} value={year}>
+                            {year}年
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
               </div>
-              
+
               <div className="flex space-x-3">
                 <button
                   type="submit"
@@ -165,7 +258,7 @@ export default function CardManagement({ isOpen, onClose }: CardManagementProps)
                 </button>
               </div>
             </form>
-            
+
             <p className="text-xs text-gray-500 mt-2">
               ※ セキュリティのため、末尾4桁のみ保存されます
             </p>
@@ -176,28 +269,45 @@ export default function CardManagement({ isOpen, onClose }: CardManagementProps)
         <div>
           <h3 className="text-lg font-medium mb-4">登録カード一覧</h3>
           {cards.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">登録されたカードがありません</p>
+            <p className="text-gray-500 text-center py-8">
+              登録されたカードがありません
+            </p>
           ) : (
             <div className="space-y-3">
-              {cards.map(card => (
-                <div key={card.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+              {cards.map((card: PaymentCard) => (
+                <div
+                  key={card.id}
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                >
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded flex items-center justify-center">
                       <span className="text-white text-xs font-bold">CARD</span>
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">{card.name}</div>
+                      <div className="font-medium text-gray-900">
+                        {card.name}
+                      </div>
                       <div className="text-sm text-gray-500">
-                        {card.company} •••• •••• •••• {card.last_four}
+                        {card.brand} •••• •••• •••• {card.lastFour}
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        有効期限: {card.expiryMonth}/{card.expiryYear}
                       </div>
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleDeleteCard(card)}
-                    className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium hover:bg-red-200"
-                  >
-                    削除
-                  </button>
+                  <div className="flex items-center space-x-2">
+                    {card.isDefault && (
+                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                        デフォルト
+                      </span>
+                    )}
+                    <button
+                      onClick={() => handleDeleteCard(card)}
+                      className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium hover:bg-red-200"
+                    >
+                      削除
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

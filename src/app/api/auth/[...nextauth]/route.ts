@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+// 明示的な名前付きインポートを使用
 import { SubscriptionService } from "@/lib/subscriptionService";
 
 const handler = NextAuth({
@@ -22,7 +23,7 @@ const handler = NextAuth({
             user.image || undefined
           );
           return true;
-        } catch (error) {
+        } catch (error: unknown) {
           console.error("ユーザー作成エラー:", error);
           return false;
         }

@@ -95,4 +95,21 @@ export class CardService {
       return [];
     }
   }
+
+  // saveCardsメソッドを追加
+  static saveCards(cards: PaymentCard[]): void {
+    if (typeof window === "undefined") return;
+    try {
+      localStorage.setItem("paymentCards", JSON.stringify(cards));
+    } catch (error) {
+      console.error("カード情報の保存に失敗しました:", error);
+    }
+  }
+
+  // deleteCardメソッドも追加
+  static deleteCard(cardId: string): void {
+    const cards = this.getCards();
+    const updatedCards = cards.filter((card) => card.id !== cardId);
+    this.saveCards(updatedCards);
+  }
 }

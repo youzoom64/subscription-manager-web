@@ -22,7 +22,7 @@ export default function SubscriptionList({
   subscriptions,
   onUpdate,
 }: SubscriptionListProps) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // 未使用変数を削除
   const [cards, setCards] = useState<PaymentCard[]>([]);
   const [editingSubscription, setEditingSubscription] =
     useState<Subscription | null>(null);
