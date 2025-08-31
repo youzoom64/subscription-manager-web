@@ -14,6 +14,7 @@ export interface Subscription {
   userId: string;
   cardId?: string;
   paymentCard?: PaymentCard;
+  order: number; // 追加: 表示順序
 }
 
 export interface PaymentCard {
@@ -82,5 +83,16 @@ export class CardService {
       .replace(/\s/g, "")
       .replace(/(.{4})/g, "$1 ")
       .trim();
+  }
+
+  static getCards(): PaymentCard[] {
+    // localStorage から PaymentCard[] を取得する実装
+    if (typeof window === "undefined") return [];
+    try {
+      const cards = localStorage.getItem("paymentCards");
+      return cards ? JSON.parse(cards) : [];
+    } catch {
+      return [];
+    }
   }
 }

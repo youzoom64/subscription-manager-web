@@ -6,6 +6,7 @@ import {
   PaymentCard,
   PAYMENT_CYCLES,
   CardService,
+  PaymentCycle,
 } from "@/types/subscription";
 import { SubscriptionService } from "@/lib/subscriptionService";
 import EditModal from "./EditModal";
@@ -53,16 +54,20 @@ export default function SubscriptionList({
 
   // 新規追加処理
   const handleAddSubscription = (
-    newSubscriptionData: Omit<Subscription, "id" | "created_at" | "updated_at">
+    newSubscriptionData: Omit<
+      Subscription,
+      "id" | "createdAt" | "updatedAt" | "userId"
+    >
   ) => {
     const maxOrder = Math.max(...subscriptions.map((s) => s.order), 0);
 
     const newSubscription: Subscription = {
       ...newSubscriptionData,
       id: `sub_${Date.now()}`,
+      userId: "temp-user", // 適切なユーザーIDを設定
       order: maxOrder + 1,
-      created_at: new Date(),
-      updated_at: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     const updated = [...subscriptions, newSubscription];
@@ -91,7 +96,7 @@ export default function SubscriptionList({
   const toggleActive = (id: string) => {
     const updated = subscriptions.map((sub) =>
       sub.id === id
-        ? { ...sub, active: !sub.active, updated_at: new Date() }
+        ? { ...sub, isActive: !sub.isActive, updatedAt: new Date() }
         : sub
     );
     onUpdate(updated);
@@ -101,7 +106,7 @@ export default function SubscriptionList({
     const monthlyEquivalent =
       SubscriptionService.getMonthlyEquivalent(subscription);
 
-    if (subscription.payment_cycle === "monthly") {
+    if (subscription.paymentCycle === PaymentCycle.MONTHLY) {
       return `¥${subscription.price.toLocaleString()}`;
     } else {
       return `¥${monthlyEquivalent.toLocaleString()}/¥${subscription.price.toLocaleString()}`;
@@ -109,21 +114,21 @@ export default function SubscriptionList({
   };
 
   const formatNextPayment = (subscription: Subscription) => {
-    if (!subscription.active) return "-";
+    if (!subscription.isActive) return "-";
 
     const nextDate = SubscriptionService.getNextPaymentDate(subscription);
     return nextDate.toLocaleDateString("ja-JP");
   };
 
   // カード表示名を取得
-  const getCardDisplayName = (cardId: string | null) => {
+  const getCardDisplayName = (cardId: string | null | undefined) => {
     if (!cardId) return "-";
     const card = cards.find((c) => c.id === cardId);
     if (!card) return "-";
-    return `${card.company} ****${card.last_four}`;
+    return `${card.brand} ****${card.lastFour}`;
   };
 
-  const handleUrlClick = (url: string) => {
+  const handleUrlClick = (url: string | undefined) => {
     if (url) {
       window.open(url, "_blank");
     }
@@ -131,7 +136,7 @@ export default function SubscriptionList({
 
   const getTotalMonthlyAmount = () => {
     return subscriptions
-      .filter((sub) => sub.active)
+      .filter((sub) => sub.isActive)
       .reduce(
         (total, sub) => total + SubscriptionService.getMonthlyEquivalent(sub),
         0
@@ -214,7 +219,7 @@ export default function SubscriptionList({
               <tr
                 key={subscription.id}
                 className={`hover:bg-gray-50 ${
-                  subscription.active ? "bg-green-50" : "bg-red-50"
+                  subscription.isActive ? "bg-green-50" : "bg-red-50"
                 }`}
               >
                 <td className="px-4 py-3 text-sm font-medium text-gray-900">
@@ -224,23 +229,21 @@ export default function SubscriptionList({
                   {formatPrice(subscription)}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-700">
-                  {PAYMENT_CYCLES[subscription.payment_cycle].name}
+                  {PAYMENT_CYCLES[subscription.paymentCycle].label}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-700">
-                  {subscription.payment_day}日
+                  {subscription.paymentDay}日
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-700">
                   {formatNextPayment(subscription)}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-700">
-                  {getCardDisplayName(subscription.card_id)}
+                  {getCardDisplayName(subscription.cardId)}
                 </td>
                 <td className="px-4 py-3 text-sm">
-                  {subscription.management_url ? (
+                  {subscription.url ? (
                     <button
-                      onClick={() =>
-                        handleUrlClick(subscription.management_url)
-                      }
+                      onClick={() => handleUrlClick(subscription.url)}
                       className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
                     >
                       管理ページ
@@ -267,12 +270,12 @@ export default function SubscriptionList({
                   <button
                     onClick={() => toggleActive(subscription.id)}
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      subscription.active
+                      subscription.isActive
                         ? "bg-green-100 text-green-800 hover:bg-green-200"
                         : "bg-red-100 text-red-800 hover:bg-red-200"
                     }`}
                   >
-                    {subscription.active ? "ON" : "OFF"}
+                    {subscription.isActive ? "ON" : "OFF"}
                   </button>
                 </td>
               </tr>

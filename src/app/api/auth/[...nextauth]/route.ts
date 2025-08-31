@@ -11,7 +11,7 @@ const handler = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile: _ }) {
       if (account?.provider === "google" && user.email) {
         try {
           // ユーザー情報をデータベースに保存
@@ -28,10 +28,10 @@ const handler = NextAuth({
       }
       return true;
     },
-    async session({ session, token }) {
+    async session({ session, token: _ }) {
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user: _ }) {
       return token;
     },
   },

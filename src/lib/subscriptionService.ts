@@ -41,7 +41,7 @@ export class SubscriptionService {
       });
 
       // Prismaの結果をフロントエンド型に変換
-      return subscriptions.map((sub) => ({
+      return subscriptions.map((sub: any) => ({
         ...sub,
         paymentCycle: sub.paymentCycle as PaymentCycle,
       }));

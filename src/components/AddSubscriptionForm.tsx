@@ -1,65 +1,82 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Subscription, PaymentCard, PAYMENT_CYCLES } from '@/types/subscription';
+import { useState } from "react";
+import {
+  Subscription,
+  PaymentCard,
+  PAYMENT_CYCLES,
+  PaymentCycle,
+} from "@/types/subscription";
 
 interface AddSubscriptionFormProps {
   isOpen: boolean;
   onClose: () => void;
   cards: PaymentCard[];
-  onAdd: (subscription: Omit<Subscription, 'id' | 'created_at' | 'updated_at'>) => void;
+  onAdd: (
+    subscription: Omit<
+      Subscription,
+      "id" | "createdAt" | "updatedAt" | "userId"
+    >
+  ) => void;
 }
 
-export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: AddSubscriptionFormProps) {
+export default function AddSubscriptionForm({
+  isOpen,
+  onClose,
+  cards,
+  onAdd,
+}: AddSubscriptionFormProps) {
   const [formData, setFormData] = useState({
-    name: '',
+    name: "",
     price: 0,
-    payment_day: 1,
-    payment_cycle: 'monthly' as keyof typeof PAYMENT_CYCLES,
-    start_month: '',
-    card_id: '',
-    management_url: ''
+    paymentDay: 1,
+    paymentCycle: PaymentCycle.MONTHLY,
+    startMonth: "",
+    cardId: "",
+    url: "",
   });
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name.trim()) {
-      alert('サービス名を入力してください');
+      alert("サービス名を入力してください");
       return;
     }
 
     const newSubscription = {
       name: formData.name.trim(),
       price: formData.price,
-      payment_day: formData.payment_day,
-      payment_cycle: formData.payment_cycle,
-      start_month: formData.start_month ? parseInt(formData.start_month) : null,
-      card_id: formData.card_id || null,
-      management_url: formData.management_url.trim(),
-      active: true,
-      order: 999 // 新規は最後に追加
+      paymentDay: formData.paymentDay,
+      paymentCycle: formData.paymentCycle,
+      startMonth: formData.startMonth
+        ? parseInt(formData.startMonth)
+        : undefined,
+      cardId: formData.cardId || undefined,
+      url: formData.url.trim() || undefined,
+      isActive: true,
+      order: 999, // 新規は最後に追加
     };
 
     onAdd(newSubscription);
-    
+
     // フォームリセット
     setFormData({
-      name: '',
+      name: "",
       price: 0,
-      payment_day: 1,
-      payment_cycle: 'monthly',
-      start_month: '',
-      card_id: '',
-      management_url: ''
+      paymentDay: 1,
+      paymentCycle: PaymentCycle.MONTHLY,
+      startMonth: "",
+      cardId: "",
+      url: "",
     });
-    
+
     onClose();
   };
 
-  const showStartMonth = formData.payment_cycle !== 'monthly';
+  const showStartMonth = formData.paymentCycle !== PaymentCycle.MONTHLY;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -83,7 +100,9 @@ export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: A
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="例: Spotify Premium"
               required
@@ -98,7 +117,12 @@ export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: A
             <input
               type="number"
               value={formData.price}
-              onChange={(e) => setFormData(prev => ({ ...prev, price: parseInt(e.target.value) || 0 }))}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  price: parseInt(e.target.value) || 0,
+                }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               min="0"
               placeholder="980"
@@ -113,8 +137,13 @@ export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: A
             </label>
             <input
               type="number"
-              value={formData.payment_day}
-              onChange={(e) => setFormData(prev => ({ ...prev, payment_day: parseInt(e.target.value) || 1 }))}
+              value={formData.paymentDay}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  paymentDay: parseInt(e.target.value) || 1,
+                }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               min="1"
               max="31"
@@ -128,12 +157,19 @@ export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: A
               支払いサイクル
             </label>
             <select
-              value={formData.payment_cycle}
-              onChange={(e) => setFormData(prev => ({ ...prev, payment_cycle: e.target.value as any }))}
+              value={formData.paymentCycle}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  paymentCycle: e.target.value as PaymentCycle,
+                }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {Object.entries(PAYMENT_CYCLES).map(([key, cycle]) => (
-                <option key={key} value={key}>{cycle.name}</option>
+                <option key={key} value={key}>
+                  {cycle.label}
+                </option>
               ))}
             </select>
           </div>
@@ -145,13 +181,20 @@ export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: A
                 更新月
               </label>
               <select
-                value={formData.start_month}
-                onChange={(e) => setFormData(prev => ({ ...prev, start_month: e.target.value }))}
+                value={formData.startMonth}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    startMonth: e.target.value,
+                  }))
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">選択してください</option>
-                {Array.from({length: 12}, (_, i) => (
-                  <option key={i + 1} value={i + 1}>{i + 1}月</option>
+                {Array.from({ length: 12 }, (_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}月
+                  </option>
                 ))}
               </select>
             </div>
@@ -163,14 +206,16 @@ export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: A
               支払いカード
             </label>
             <select
-              value={formData.card_id}
-              onChange={(e) => setFormData(prev => ({ ...prev, card_id: e.target.value }))}
+              value={formData.cardId}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, cardId: e.target.value }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">カードを選択</option>
-              {cards.map(card => (
+              {cards.map((card) => (
                 <option key={card.id} value={card.id}>
-                  {card.name} ({card.company} ****{card.last_four})
+                  {card.name} ({card.brand} ****{card.lastFour})
                 </option>
               ))}
             </select>
@@ -183,8 +228,10 @@ export default function AddSubscriptionForm({ isOpen, onClose, cards, onAdd }: A
             </label>
             <input
               type="url"
-              value={formData.management_url}
-              onChange={(e) => setFormData(prev => ({ ...prev, management_url: e.target.value }))}
+              value={formData.url}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, url: e.target.value }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="https://..."
             />
