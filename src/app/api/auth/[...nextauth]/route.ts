@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { SubscriptionService } from "@/lib/subscriptionService";
@@ -11,7 +12,7 @@ const handler = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ user, account, profile: _ }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider === "google" && user.email) {
         try {
           // ユーザー情報をデータベースに保存
@@ -28,10 +29,10 @@ const handler = NextAuth({
       }
       return true;
     },
-    async session({ session, token: _ }) {
+    async session({ session, token }) {
       return session;
     },
-    async jwt({ token, user: _ }) {
+    async jwt({ token, user }) {
       return token;
     },
   },
