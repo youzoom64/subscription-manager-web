@@ -5,7 +5,7 @@ import {
   Subscription,
   PaymentCard,
   PAYMENT_CYCLES,
-  CARD_COMPANIES,
+  PaymentCycle,
 } from "@/types/subscription";
 
 interface EditModalProps {
@@ -26,11 +26,11 @@ export default function EditModal({
   const [formData, setFormData] = useState({
     name: subscription.name,
     price: subscription.price,
-    payment_day: subscription.payment_day,
-    payment_cycle: subscription.payment_cycle,
-    start_month: subscription.start_month || "",
-    card_id: subscription.card_id || "",
-    management_url: subscription.management_url,
+    paymentDay: subscription.paymentDay,
+    paymentCycle: subscription.paymentCycle,
+    startMonth: subscription.startMonth || 0,
+    cardId: subscription.cardId || "",
+    url: subscription.url || "",
   });
 
   if (!isOpen) return null;
@@ -41,22 +41,20 @@ export default function EditModal({
     const updatedSubscription: Subscription = {
       ...subscription,
       name: formData.name.trim(),
-      price: parseInt(formData.price.toString()),
-      payment_day: parseInt(formData.payment_day.toString()),
-      payment_cycle: formData.payment_cycle as any,
-      start_month: formData.start_month
-        ? parseInt(formData.start_month.toString())
-        : null,
-      card_id: formData.card_id || null,
-      management_url: formData.management_url.trim(),
-      updated_at: new Date(),
+      price: Number(formData.price),
+      paymentDay: Number(formData.paymentDay),
+      paymentCycle: formData.paymentCycle,
+      startMonth: formData.startMonth || undefined,
+      cardId: formData.cardId || undefined,
+      url: formData.url.trim() || undefined,
+      updatedAt: new Date(),
     };
 
     onSave(updatedSubscription);
     onClose();
   };
 
-  const showStartMonth = formData.payment_cycle !== "monthly";
+  const showStartMonth = formData.paymentCycle !== PaymentCycle.MONTHLY;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -99,7 +97,7 @@ export default function EditModal({
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  price: parseInt(e.target.value) || 0,
+                  price: Number(e.target.value) || 0,
                 }))
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -115,11 +113,11 @@ export default function EditModal({
             </label>
             <input
               type="number"
-              value={formData.payment_day}
+              value={formData.paymentDay}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  payment_day: parseInt(e.target.value) || 1,
+                  paymentDay: Number(e.target.value) || 1,
                 }))
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -135,40 +133,40 @@ export default function EditModal({
               支払いサイクル
             </label>
             <select
-              value={formData.payment_cycle}
+              value={formData.paymentCycle}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  payment_cycle: e.target.value as any,
+                  paymentCycle: e.target.value as PaymentCycle,
                 }))
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {Object.entries(PAYMENT_CYCLES).map(([key, cycle]) => (
                 <option key={key} value={key}>
-                  {cycle.name}
+                  {cycle.label}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* 更新月（月払い以外の場合のみ表示） */}
+          {/* 開始月（月払い以外の場合のみ表示） */}
           {showStartMonth && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                更新月
+                開始月
               </label>
               <select
-                value={formData.start_month}
+                value={formData.startMonth}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    start_month: e.target.value,
+                    startMonth: Number(e.target.value),
                   }))
                 }
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">選択してください</option>
+                <option value={0}>選択してください</option>
                 {Array.from({ length: 12 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
                     {i + 1}月
@@ -184,19 +182,35 @@ export default function EditModal({
               支払いカード
             </label>
             <select
-              value={formData.card_id}
+              value={formData.cardId}
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, card_id: e.target.value }))
+                setFormData((prev) => ({ ...prev, cardId: e.target.value }))
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">カードを選択してください</option>
               {cards.map((card) => (
                 <option key={card.id} value={card.id}>
-                  {card.company} ****{card.last_four} ({card.name})
+                  {card.brand} ****{card.lastFour} ({card.name})
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* 管理URL */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              管理URL
+            </label>
+            <input
+              type="url"
+              value={formData.url}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, url: e.target.value }))
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="https://example.com/account"
+            />
           </div>
 
           {/* ボタン */}
