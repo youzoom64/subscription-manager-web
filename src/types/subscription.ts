@@ -51,3 +51,36 @@ export const PAYMENT_CYCLES = {
   SEMI_ANNUAL: { label: "半年払い", months: 6 },
   YEARLY: { label: "年払い", months: 12 },
 };
+
+// カード会社の定義
+export const CARD_COMPANIES = {
+  VISA: "Visa",
+  MASTERCARD: "Mastercard",
+  JCB: "JCB",
+  AMEX: "American Express",
+  DINERS: "Diners Club",
+};
+
+// CardService (存在しないexportエラーを修正)
+export class CardService {
+  static validateCardNumber(number: string): boolean {
+    // 簡易的なカード番号バリデーション
+    return /^\d{13,19}$/.test(number.replace(/\s/g, ""));
+  }
+
+  static getCardBrand(number: string): string {
+    const cleanNumber = number.replace(/\s/g, "");
+    if (cleanNumber.startsWith("4")) return "Visa";
+    if (cleanNumber.startsWith("5") || cleanNumber.startsWith("2"))
+      return "Mastercard";
+    if (cleanNumber.startsWith("3")) return "American Express";
+    return "Unknown";
+  }
+
+  static formatCardNumber(number: string): string {
+    return number
+      .replace(/\s/g, "")
+      .replace(/(.{4})/g, "$1 ")
+      .trim();
+  }
+}
