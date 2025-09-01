@@ -218,7 +218,8 @@ export default function AddSubscriptionForm({
             </label>
             <input
               type="number"
-              value={formData.price}
+              value={formData.price === 0 ? "" : formData.price}
+              placeholder="例: 1500"
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
@@ -227,7 +228,6 @@ export default function AddSubscriptionForm({
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               min="0"
-              placeholder="980"
               required
             />
           </div>
@@ -239,7 +239,8 @@ export default function AddSubscriptionForm({
             </label>
             <input
               type="number"
-              value={formData.paymentDay}
+              value={formData.paymentDay === 1 ? "" : formData.paymentDay}
+              placeholder="例: 15"
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
