@@ -193,6 +193,26 @@ export const POPULAR_SERVICES = {
     url: "https://tver.jp/",
   },
 
+  // ニコニコプレミアム追加
+  ニコニコプレミアム: {
+    price: 790,
+    cycle: "MONTHLY",
+    category: "動画配信",
+    url: "https://premium.nicovideo.jp/",
+  },
+  "ニコニコプレミアム 年額（WEB）": {
+    price: 7900,
+    cycle: "YEARLY",
+    category: "動画配信",
+    url: "https://premium.nicovideo.jp/",
+  },
+  "ニコニコプレミアム 年額（アプリ）": {
+    price: 9900,
+    cycle: "YEARLY",
+    category: "動画配信",
+    url: "https://premium.nicovideo.jp/",
+  },
+
   // 音楽配信サービス
   "Spotify Premium 個人": {
     price: 980,
@@ -487,6 +507,44 @@ export const POPULAR_SERVICES = {
     url: "https://www.coursera.org/courseraplus",
   },
 
+  // SNS・コミュニケーション
+  "X Basic": {
+    price: 344,
+    cycle: "MONTHLY",
+    category: "SNS・コミュニケーション",
+    url: "https://x.com/premium",
+  },
+  "X Basic 年額": {
+    price: 287,
+    cycle: "YEARLY_MONTHLY_DISPLAY",
+    category: "SNS・コミュニケーション",
+    url: "https://x.com/premium",
+  },
+  "X Premium": {
+    price: 918,
+    cycle: "MONTHLY",
+    category: "SNS・コミュニケーション",
+    url: "https://x.com/premium",
+  },
+  "X Premium 年額": {
+    price: 765,
+    cycle: "YEARLY_MONTHLY_DISPLAY",
+    category: "SNS・コミュニケーション",
+    url: "https://x.com/premium",
+  },
+  "X Premium+": {
+    price: 6080,
+    cycle: "MONTHLY",
+    category: "SNS・コミュニケーション",
+    url: "https://x.com/premium",
+  },
+  "X Premium+ 年額": {
+    price: 5003,
+    cycle: "YEARLY_MONTHLY_DISPLAY",
+    category: "SNS・コミュニケーション",
+    url: "https://x.com/premium",
+  },
+
   // その他
   "iCloud+ 50GB": {
     price: 130,
@@ -541,4 +599,5 @@ export const SERVICE_CATEGORIES = {
   ゲーム: "🎮",
   通信: "📱",
   学習: "📚",
+  "SNS・コミュニケーション": "💬",
 } as const;
