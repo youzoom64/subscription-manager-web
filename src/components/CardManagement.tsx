@@ -131,7 +131,7 @@ export default function CardManagement({
         {/* 追加フォーム */}
         {isAddFormOpen && (
           <div className="mb-6 p-4 border rounded-lg bg-gray-50">
-            <h3 className="text-lg font-medium mb-4">新しいカードを追加</h3>
+            <h3 className="text-lg font-medium mb-4 text-black">新しいカードを追加</h3>
             <form onSubmit={handleAddCard} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -252,7 +252,7 @@ export default function CardManagement({
                 <button
                   type="button"
                   onClick={() => setIsAddFormOpen(false)}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm"
+                  className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm"
                 >
                   キャンセル
                 </button>
@@ -267,7 +267,7 @@ export default function CardManagement({
 
         {/* カード一覧 */}
         <div>
-          <h3 className="text-lg font-medium mb-4">登録カード一覧</h3>
+          <h3 className="text-lg font-medium mb-4 text-black">登録カード一覧</h3>
           {cards.length === 0 ? (
             <p className="text-black text-center py-8">
               登録されたカードがありません

@@ -9,7 +9,7 @@ export default function LoginButton() {
     return (
       <button 
         disabled 
-        className="px-4 py-2 bg-gray-300 text-gray-600 rounded-md cursor-not-allowed"
+        className="px-4 py-2 bg-gray-300 text-black rounded-md cursor-not-allowed"
       >
         読み込み中...
       </button>
@@ -19,7 +19,7 @@ export default function LoginButton() {
   if (session) {
     return (
       <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-black">
           ようこそ、{session.user?.name || session.user?.email}さん
         </span>
         <button

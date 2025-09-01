@@ -143,10 +143,10 @@ export default function AddSubscriptionForm({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">新規サブスクリプション追加</h2>
+          <h2 className="text-xl font-semibold text-black">新規サブスクリプション追加</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-2xl"
+            className="text-black hover:text-black text-2xl"
           >
             ×
           </button>
@@ -155,7 +155,7 @@ export default function AddSubscriptionForm({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* サービス選択 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               サービス選択
             </label>
             <select
@@ -194,7 +194,7 @@ export default function AddSubscriptionForm({
 
           {/* サービス名 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               サービス名 *
             </label>
             <input
@@ -211,7 +211,7 @@ export default function AddSubscriptionForm({
 
           {/* 料金 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               料金（円） *
             </label>
             <input
@@ -232,7 +232,7 @@ export default function AddSubscriptionForm({
 
           {/* 支払日 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               支払日 *
             </label>
             <input
@@ -253,7 +253,7 @@ export default function AddSubscriptionForm({
 
           {/* 支払いサイクル */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               支払いサイクル
             </label>
             <select
@@ -277,7 +277,7 @@ export default function AddSubscriptionForm({
           {/* 更新月 */}
           {showStartMonth && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black mb-1">
                 更新月
               </label>
               <select
@@ -302,7 +302,7 @@ export default function AddSubscriptionForm({
 
           {/* 支払いカード */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               支払いカード
             </label>
             <select
@@ -323,7 +323,7 @@ export default function AddSubscriptionForm({
 
           {/* 管理URL */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               管理URL
             </label>
             <input
@@ -353,7 +353,7 @@ export default function AddSubscriptionForm({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="flex-1 bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               キャンセル
             </button>

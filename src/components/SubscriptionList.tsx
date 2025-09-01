@@ -187,7 +187,7 @@ export default function SubscriptionList({
       {/* ヘッダー */}
       <div className="bg-gray-50 px-6 py-4 border-b">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-black">
             サブスクリプション一覧
           </h2>
           <div className="flex items-center space-x-4">
@@ -206,7 +206,7 @@ export default function SubscriptionList({
               </button>
             </div>
             <div className="text-right">
-              <div className="text-sm text-gray-600">月相当額合計</div>
+              <div className="text-sm text-black">月相当額合計</div>
               <div className="text-lg font-bold text-blue-600">
                 ¥{getTotalMonthlyAmount().toLocaleString()}
               </div>
@@ -220,31 +220,31 @@ export default function SubscriptionList({
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 サービス名
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 月相当額/実支払額
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 サイクル
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 支払日
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 次回支払日
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 支払いカード
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 管理URL
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 操作
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+              <th className="px-4 py-3 text-left text-sm font-medium text-black">
                 状態
               </th>
             </tr>
@@ -257,22 +257,22 @@ export default function SubscriptionList({
                   subscription.isActive ? "bg-green-50" : "bg-red-50"
                 }`}
               >
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                <td className="px-4 py-3 text-sm font-medium text-black">
                   {subscription.name}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm text-black">
                   {formatPrice(subscription)}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm text-black">
                   {PAYMENT_CYCLES[subscription.paymentCycle].label}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm text-black">
                   {subscription.paymentDay}日
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm text-black">
                   {formatNextPayment(subscription)}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm text-black">
                   {getCardDisplayName(subscription.cardId)}
                 </td>
                 <td className="px-4 py-3 text-sm">
