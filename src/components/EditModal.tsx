@@ -63,7 +63,7 @@ export default function EditModal({
           <h2 className="text-xl font-semibold">サブスクリプション編集</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-2xl"
+            className="text-gray-800 hover:text-gray-900 text-2xl"
           >
             ×
           </button>
@@ -72,7 +72,7 @@ export default function EditModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* サービス名 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-900 mb-1">
               サービス名
             </label>
             <input
@@ -88,7 +88,7 @@ export default function EditModal({
 
           {/* 料金 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-900 mb-1">
               料金（円）
             </label>
             <input
@@ -108,7 +108,7 @@ export default function EditModal({
 
           {/* 支払日 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-900 mb-1">
               支払日
             </label>
             <input
@@ -129,7 +129,7 @@ export default function EditModal({
 
           {/* 支払いサイクル */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-900 mb-1">
               支払いサイクル
             </label>
             <select
@@ -153,7 +153,7 @@ export default function EditModal({
           {/* 開始月（月払い以外の場合のみ表示） */}
           {showStartMonth && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-900 mb-1">
                 開始月
               </label>
               <select
@@ -178,7 +178,7 @@ export default function EditModal({
 
           {/* 支払いカード */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-900 mb-1">
               支払いカード
             </label>
             <select
@@ -199,7 +199,7 @@ export default function EditModal({
 
           {/* 管理URL */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-900 mb-1">
               管理URL
             </label>
             <input
@@ -218,7 +218,7 @@ export default function EditModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              className="px-4 py-2 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               キャンセル
             </button>

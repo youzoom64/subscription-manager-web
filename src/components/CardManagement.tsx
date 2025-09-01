@@ -112,7 +112,7 @@ export default function CardManagement({
           <h2 className="text-2xl font-semibold text-gray-900">カード管理</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+            className="text-gray-800 hover:text-gray-900 text-2xl font-bold"
           >
             ×
           </button>
@@ -135,7 +135,7 @@ export default function CardManagement({
             <form onSubmit={handleAddCard} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-1">
                     カード名 *
                   </label>
                   <input
@@ -151,7 +151,7 @@ export default function CardManagement({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-1">
                     カードブランド *
                   </label>
                   <select
@@ -173,7 +173,7 @@ export default function CardManagement({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-1">
                     末尾4桁 *
                   </label>
                   <input
@@ -195,7 +195,7 @@ export default function CardManagement({
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-900 mb-1">
                       有効期限月
                     </label>
                     <select
@@ -216,7 +216,7 @@ export default function CardManagement({
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-900 mb-1">
                       有効期限年
                     </label>
                     <select
@@ -259,7 +259,7 @@ export default function CardManagement({
               </div>
             </form>
 
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-800 mt-2">
               ※ セキュリティのため、末尾4桁のみ保存されます
             </p>
           </div>
@@ -269,7 +269,7 @@ export default function CardManagement({
         <div>
           <h3 className="text-lg font-medium mb-4">登録カード一覧</h3>
           {cards.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-gray-900 text-center py-8">
               登録されたカードがありません
             </p>
           ) : (
@@ -287,10 +287,10 @@ export default function CardManagement({
                       <div className="font-medium text-gray-900">
                         {card.name}
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-gray-900">
                         {card.brand} •••• •••• •••• {card.lastFour}
                       </div>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-gray-800">
                         有効期限: {card.expiryMonth}/{card.expiryYear}
                       </div>
                     </div>
