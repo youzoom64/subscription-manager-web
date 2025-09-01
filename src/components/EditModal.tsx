@@ -104,6 +104,7 @@ export default function EditModal({
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               min="0"
+              step="1"
               required
             />
           </div>
@@ -125,6 +126,7 @@ export default function EditModal({
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               min="1"
               max="31"
+              step="1"
               required
             />
           </div>
