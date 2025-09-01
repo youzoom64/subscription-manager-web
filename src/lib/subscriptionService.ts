@@ -32,7 +32,6 @@ export class SubscriptionService {
       const subscriptions = await prisma.subscription.findMany({
         where: {
           userId: user.id,
-          isActive: true,
         },
         include: {
           paymentCard: true,
