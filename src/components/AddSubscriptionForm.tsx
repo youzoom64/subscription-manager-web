@@ -47,8 +47,8 @@ export default function AddSubscriptionForm({
       setSelectedService("");
       setFormData({
         name: "",
-        price: 0,
-        paymentDay: 1,
+        price: "",
+        paymentDay: "",
         paymentCycle: PaymentCycle.MONTHLY,
         startMonth: "",
         cardId: "",
@@ -62,8 +62,8 @@ export default function AddSubscriptionForm({
       // 自動入力するが、ユーザーが編集可能
       setFormData({
         name: serviceName,
-        price: service.price,
-        paymentDay: 1,
+        price: service.price.toString(),
+        paymentDay: "1",
         paymentCycle: service.cycle as PaymentCycle,
         startMonth: "",
         cardId: "",
@@ -74,8 +74,8 @@ export default function AddSubscriptionForm({
       setSelectedService("");
       setFormData({
         name: "",
-        price: 0,
-        paymentDay: 1,
+        price: "",
+        paymentDay: "",
         paymentCycle: PaymentCycle.MONTHLY,
         startMonth: "",
         cardId: "",
