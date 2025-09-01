@@ -64,20 +64,20 @@ export default function CardManagement({
       isDefault: cards.length === 0, // 最初のカードをデフォルトに
     };
 
-        try {
+    try {
       console.log("カード追加開始:", newCardData);
-      
+
       // APIでデータベースに保存
       const savedCard = await ApiClient.createPaymentCard(newCardData);
       console.log("API結果:", savedCard);
-      
+
       if (savedCard) {
         const updatedCards = [...cards, savedCard];
         setCards(updatedCards);
-        
+
         // フォールバック用にlocalStorageにも保存
         CardService.saveCards(updatedCards);
-        
+
         alert("カードを追加しました");
       } else {
         console.error("APIから null が返されました");
