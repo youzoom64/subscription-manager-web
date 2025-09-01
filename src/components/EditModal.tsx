@@ -186,7 +186,11 @@ export default function EditModal({
               </label>
               <button
                 type="button"
-                onClick={() => alert("カード管理はメイン画面の「カード管理」ボタンから行えます")}
+                onClick={() =>
+                  alert(
+                    "カード管理はメイン画面の「カード管理」ボタンから行えます"
+                  )
+                }
                 className="text-blue-600 text-sm hover:text-blue-800"
               >
                 + カード追加
@@ -194,9 +198,10 @@ export default function EditModal({
             </div>
             <select
               value={formData.cardId}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, cardId: e.target.value }))
-              }
+              onChange={(e) => {
+                console.log("Card selection changed:", e.target.value);
+                setFormData((prev) => ({ ...prev, cardId: e.target.value }));
+              }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-black"
             >
               <option value="">カードを選択してください</option>
@@ -206,6 +211,11 @@ export default function EditModal({
                 </option>
               ))}
             </select>
+            {/* デバッグ情報 */}
+            <div className="text-xs text-gray-500 mt-1">
+              現在選択中: {formData.cardId || "なし"} | 
+              利用可能カード: {cards.length}個
+            </div>
           </div>
 
           {/* 管理URL */}

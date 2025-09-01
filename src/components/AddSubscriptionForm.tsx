@@ -311,7 +311,11 @@ export default function AddSubscriptionForm({
               </label>
               <button
                 type="button"
-                onClick={() => alert("カード管理はメイン画面の「カード管理」ボタンから行えます")}
+                onClick={() =>
+                  alert(
+                    "カード管理はメイン画面の「カード管理」ボタンから行えます"
+                  )
+                }
                 className="text-blue-600 text-sm hover:text-blue-800"
               >
                 + カード追加
