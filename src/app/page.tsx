@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Subscription } from "@/types/subscription";
-import { SubscriptionService } from "@/lib/subscriptionService";
+import { ApiClient } from "@/lib/apiClient";
 import SubscriptionList from "@/components/SubscriptionList";
 import LoginButton from "@/components/LoginButton";
 
@@ -16,9 +16,7 @@ export default function Home() {
     const loadSubscriptions = async () => {
       if (status !== "loading" && session?.user?.email) {
         try {
-          const subs = await SubscriptionService.getSubscriptions(
-            session.user.email
-          );
+          const subs = await ApiClient.getSubscriptions();
           setSubscriptions(subs);
         } catch (error) {
           console.error("サブスクリプション読み込みエラー:", error);
@@ -33,9 +31,7 @@ export default function Home() {
   const updateSubscriptions = async () => {
     if (session?.user?.email) {
       try {
-        const subs = await SubscriptionService.getSubscriptions(
-          session.user.email
-        );
+        const subs = await ApiClient.getSubscriptions();
         setSubscriptions(subs);
       } catch (error) {
         console.error("サブスクリプション更新エラー:", error);

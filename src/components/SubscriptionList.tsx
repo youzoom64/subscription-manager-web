@@ -9,13 +9,14 @@ import {
   PaymentCycle,
 } from "@/types/subscription";
 import { SubscriptionService } from "@/lib/subscriptionService";
+import { ApiClient } from "@/lib/apiClient";
 import EditModal from "./EditModal";
 import AddSubscriptionForm from "./AddSubscriptionForm";
 import CardManagement from "./CardManagement";
 
 interface SubscriptionListProps {
   subscriptions: Subscription[];
-  onUpdate: (subscriptions: Subscription[]) => void;
+  onUpdate: () => void;
 }
 
 export default function SubscriptionList({
@@ -31,9 +32,16 @@ export default function SubscriptionList({
   const [isCardManagementOpen, setIsCardManagementOpen] = useState(false);
 
   useEffect(() => {
-    const loadCards = () => {
-      const cardData = CardService.getCards();
-      setCards(cardData);
+    const loadCards = async () => {
+      try {
+        const cardData = await ApiClient.getPaymentCards();
+        setCards(cardData);
+      } catch (error) {
+        console.error("カード取得エラー:", error);
+        // フォールバックとしてローカルストレージから取得
+        const localCards = CardService.getCards();
+        setCards(localCards);
+      }
     };
     loadCards();
   }, []);
@@ -45,61 +53,88 @@ export default function SubscriptionList({
   };
 
   // 編集保存
-  const handleSaveEdit = (updatedSubscription: Subscription) => {
-    const updated = subscriptions.map((sub) =>
-      sub.id === updatedSubscription.id ? updatedSubscription : sub
-    );
-    onUpdate(updated);
+  const handleSaveEdit = async (updatedSubscription: Subscription) => {
+    try {
+      const result = await ApiClient.updateSubscription(
+        updatedSubscription.id,
+        updatedSubscription
+      );
+      if (result) {
+        onUpdate(); // 親コンポーネントで再取得
+      }
+    } catch (error) {
+      console.error("更新エラー:", error);
+      alert("更新に失敗しました");
+    }
   };
 
   // 新規追加処理
-  const handleAddSubscription = (
+  const handleAddSubscription = async (
     newSubscriptionData: Omit<
       Subscription,
       "id" | "createdAt" | "updatedAt" | "userId"
     >
   ) => {
-    const maxOrder = Math.max(...subscriptions.map((s) => s.order), 0);
-
-    const newSubscription: Subscription = {
-      ...newSubscriptionData,
-      id: `sub_${Date.now()}`,
-      userId: "temp-user", // 適切なユーザーIDを設定
-      order: maxOrder + 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    const updated = [...subscriptions, newSubscription];
-    onUpdate(updated);
+    try {
+      const result = await ApiClient.createSubscription(newSubscriptionData);
+      if (result) {
+        onUpdate(); // 親コンポーネントで再取得
+      }
+    } catch (error) {
+      console.error("作成エラー:", error);
+      alert("作成に失敗しました");
+    }
   };
 
   // 削除処理
-  const handleDeleteSubscription = (subscriptionToDelete: Subscription) => {
+  const handleDeleteSubscription = async (
+    subscriptionToDelete: Subscription
+  ) => {
     const confirmDelete = window.confirm(
       `${subscriptionToDelete.name}を削除しますか？この操作は取り消せません。`
     );
 
     if (confirmDelete) {
-      const updated = subscriptions.filter(
-        (sub) => sub.id !== subscriptionToDelete.id
-      );
-      onUpdate(updated);
+      try {
+        const success = await ApiClient.deleteSubscription(
+          subscriptionToDelete.id
+        );
+        if (success) {
+          onUpdate(); // 親コンポーネントで再取得
+        }
+      } catch (error) {
+        console.error("削除エラー:", error);
+        alert("削除に失敗しました");
+      }
     }
   };
 
-  const reloadCards = () => {
-    const cardData = CardService.getCards();
-    setCards(cardData);
+  const reloadCards = async () => {
+    try {
+      const cardData = await ApiClient.getPaymentCards();
+      setCards(cardData);
+    } catch (error) {
+      console.error("カード再取得エラー:", error);
+      // フォールバックとしてローカルストレージから取得
+      const localCards = CardService.getCards();
+      setCards(localCards);
+    }
   };
 
-  const toggleActive = (id: string) => {
-    const updated = subscriptions.map((sub) =>
-      sub.id === id
-        ? { ...sub, isActive: !sub.isActive, updatedAt: new Date() }
-        : sub
-    );
-    onUpdate(updated);
+  const toggleActive = async (id: string) => {
+    try {
+      const subscription = subscriptions.find((sub) => sub.id === id);
+      if (!subscription) return;
+
+      const updated = { ...subscription, isActive: !subscription.isActive };
+      const result = await ApiClient.updateSubscription(id, updated);
+      if (result) {
+        onUpdate(); // 親コンポーネントで再取得
+      }
+    } catch (error) {
+      console.error("アクティブ状態の更新エラー:", error);
+      alert("状態の更新に失敗しました");
+    }
   };
 
   const formatPrice = (subscription: Subscription) => {
