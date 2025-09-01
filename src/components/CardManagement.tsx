@@ -64,9 +64,13 @@ export default function CardManagement({
       isDefault: cards.length === 0, // 最初のカードをデフォルトに
     };
 
-    try {
+        try {
+      console.log("カード追加開始:", newCardData);
+      
       // APIでデータベースに保存
       const savedCard = await ApiClient.createPaymentCard(newCardData);
+      console.log("API結果:", savedCard);
+      
       if (savedCard) {
         const updatedCards = [...cards, savedCard];
         setCards(updatedCards);
@@ -76,11 +80,12 @@ export default function CardManagement({
         
         alert("カードを追加しました");
       } else {
-        alert("カードの追加に失敗しました");
+        console.error("APIから null が返されました");
+        alert("カードの追加に失敗しました（APIエラー）");
       }
     } catch (error) {
       console.error("カード追加エラー:", error);
-      alert("カードの追加に失敗しました");
+      alert(`カードの追加に失敗しました: ${error}`);
     }
 
     // フォームリセット
