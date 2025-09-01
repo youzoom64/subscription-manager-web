@@ -295,7 +295,12 @@ export default function SubscriptionList({
                     編集
                   </button>
                   <button
-                    onClick={() => handleDeleteSubscription(subscription)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log("DELETE button clicked for:", subscription.name);
+                      handleDeleteSubscription(subscription);
+                    }}
                     className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium hover:bg-red-200"
                   >
                     削除
@@ -303,7 +308,12 @@ export default function SubscriptionList({
                 </td>
                 <td className="px-4 py-3 text-sm">
                   <button
-                    onClick={() => toggleActive(subscription.id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log("ON/OFF button clicked for:", subscription.name);
+                      toggleActive(subscription.id);
+                    }}
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
                       subscription.isActive
                         ? "bg-green-100 text-green-800 hover:bg-green-200"
