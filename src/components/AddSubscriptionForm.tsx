@@ -31,8 +31,8 @@ export default function AddSubscriptionForm({
   const [customMode, setCustomMode] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    price: 0,
-    paymentDay: 1,
+    price: "",
+    paymentDay: "",
     paymentCycle: PaymentCycle.MONTHLY,
     startMonth: "",
     cardId: "",
@@ -94,8 +94,8 @@ export default function AddSubscriptionForm({
 
     const newSubscription = {
       name: formData.name.trim(),
-      price: formData.price,
-      paymentDay: formData.paymentDay,
+      price: parseInt(formData.price) || 0,
+      paymentDay: parseInt(formData.paymentDay) || 1,
       paymentCycle: formData.paymentCycle,
       startMonth: formData.startMonth
         ? parseInt(formData.startMonth)
@@ -113,8 +113,8 @@ export default function AddSubscriptionForm({
     setCustomMode(false);
     setFormData({
       name: "",
-      price: 0,
-      paymentDay: 1,
+      price: "",
+      paymentDay: "",
       paymentCycle: PaymentCycle.MONTHLY,
       startMonth: "",
       cardId: "",
@@ -218,12 +218,12 @@ export default function AddSubscriptionForm({
             </label>
             <input
               type="number"
-              value={formData.price === 0 ? "" : formData.price}
+              value={formData.price}
               placeholder="例: 1500"
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  price: parseInt(e.target.value) || 0,
+                  price: e.target.value,
                 }))
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
@@ -240,12 +240,12 @@ export default function AddSubscriptionForm({
             </label>
             <input
               type="number"
-              value={formData.paymentDay === 1 ? "" : formData.paymentDay}
+              value={formData.paymentDay}
               placeholder="例: 15"
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  paymentDay: parseInt(e.target.value) || 1,
+                  paymentDay: e.target.value,
                 }))
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
