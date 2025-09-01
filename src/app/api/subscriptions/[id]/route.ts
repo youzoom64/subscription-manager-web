@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { SubscriptionService } from "@/lib/subscriptionService";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 // サブスクリプション更新
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -16,7 +16,8 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const subscriptionId = params.id;
+    const resolvedParams = await params;
+    const subscriptionId = resolvedParams.id;
 
     const updatedSubscription = await SubscriptionService.updateSubscription(
       subscriptionId,
@@ -43,7 +44,7 @@ export async function PUT(
 // サブスクリプション削除
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -52,7 +53,8 @@ export async function DELETE(
       return NextResponse.json({ error: "認証が必要です" }, { status: 401 });
     }
 
-    const subscriptionId = params.id;
+    const resolvedParams = await params;
+    const subscriptionId = resolvedParams.id;
     const success = await SubscriptionService.deleteSubscription(
       subscriptionId
     );
