@@ -43,3 +43,6 @@ next-env.d.ts
 .vercel
 
 .env*.local
+
+# Exclude status/progress files
+sinchoku.html
