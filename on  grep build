@@ -1,0 +1,3 @@
+[33m0944681[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Fix production database schema deployment - add prisma db push to build process
+[33m22a841c[m Fix Vercel build errors
+[33m51a17bb[m � データベース完全統合 - API構築・永続化問題解決
