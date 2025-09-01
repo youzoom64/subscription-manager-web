@@ -213,8 +213,8 @@ export default function EditModal({
             </select>
             {/* デバッグ情報 */}
             <div className="text-xs text-gray-500 mt-1">
-              現在選択中: {formData.cardId || "なし"} | 
-              利用可能カード: {cards.length}個
+              現在選択中: {formData.cardId || "なし"} | 利用可能カード:{" "}
+              {cards.length}個
             </div>
           </div>
 

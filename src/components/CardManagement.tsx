@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { PaymentCard, CARD_COMPANIES, CardService } from "@/types/subscription";
+import { ApiClient } from "@/lib/apiClient";
 
 interface CardManagementProps {
   isOpen: boolean;
@@ -28,12 +29,20 @@ export default function CardManagement({
     }
   }, [isOpen]);
 
-  const loadCards = () => {
-    const cardData = CardService.getCards();
-    setCards(cardData);
+  const loadCards = async () => {
+    try {
+      // まずAPIからデータベースの情報を取得
+      const cardData = await ApiClient.getPaymentCards();
+      setCards(cardData);
+    } catch (error) {
+      console.error("カード取得エラー:", error);
+      // フォールバックとしてローカルストレージから取得
+      const localCards = CardService.getCards();
+      setCards(localCards);
+    }
   };
 
-  const handleAddCard = (e: React.FormEvent) => {
+  const handleAddCard = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.name.trim() || !formData.lastFour.trim()) {
@@ -46,27 +55,32 @@ export default function CardManagement({
       return;
     }
 
-    const newCard: PaymentCard = {
-      id: `card_${Date.now()}`,
+    const newCardData = {
       name: formData.name.trim(),
       brand: formData.brand,
       lastFour: formData.lastFour,
       expiryMonth: formData.expiryMonth,
       expiryYear: formData.expiryYear,
       isDefault: cards.length === 0, // 最初のカードをデフォルトに
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      userId: "temp-user", // 適切なユーザーIDを設定
     };
 
-    const updatedCards = [...cards, newCard];
-    setCards(updatedCards);
-
-    // CardServiceに保存 - エラーハンドリング付き
     try {
-      CardService.saveCards(updatedCards);
+      // APIでデータベースに保存
+      const savedCard = await ApiClient.createPaymentCard(newCardData);
+      if (savedCard) {
+        const updatedCards = [...cards, savedCard];
+        setCards(updatedCards);
+        
+        // フォールバック用にlocalStorageにも保存
+        CardService.saveCards(updatedCards);
+        
+        alert("カードを追加しました");
+      } else {
+        alert("カードの追加に失敗しました");
+      }
     } catch (error) {
-      console.error("カード保存エラー:", error);
+      console.error("カード追加エラー:", error);
+      alert("カードの追加に失敗しました");
     }
 
     // フォームリセット
