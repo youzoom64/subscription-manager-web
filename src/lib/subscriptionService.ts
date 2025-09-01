@@ -170,15 +170,11 @@ export class SubscriptionService {
     }
   }
 
-  // サブスクリプション削除（論理削除）
+  // サブスクリプション削除（物理削除）
   static async deleteSubscription(subscriptionId: string): Promise<boolean> {
     try {
-      await prisma.subscription.update({
+      await prisma.subscription.delete({
         where: { id: subscriptionId },
-        data: {
-          isActive: false,
-          updatedAt: new Date(),
-        },
       });
       return true;
     } catch (error: unknown) {
