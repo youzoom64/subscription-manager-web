@@ -180,9 +180,18 @@ export default function EditModal({
 
           {/* 支払いカード */}
           <div>
-            <label className="block text-sm font-medium text-black mb-1">
-              支払いカード
-            </label>
+            <div className="flex justify-between items-center mb-1">
+              <label className="block text-sm font-medium text-black">
+                支払いカード
+              </label>
+              <button
+                type="button"
+                onClick={() => alert("カード管理はメイン画面の「カード管理」ボタンから行えます")}
+                className="text-blue-600 text-sm hover:text-blue-800"
+              >
+                + カード追加
+              </button>
+            </div>
             <select
               value={formData.cardId}
               onChange={(e) =>
