@@ -144,7 +144,7 @@ export default function CardManagement({
                     onChange={(e) =>
                       setFormData((prev) => ({ ...prev, name: e.target.value }))
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                     placeholder="例: メインカード"
                     required
                   />
@@ -162,7 +162,7 @@ export default function CardManagement({
                         brand: e.target.value,
                       }))
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                   >
                     {Object.entries(CARD_COMPANIES).map(([key, value]) => (
                       <option key={key} value={value}>
@@ -185,7 +185,7 @@ export default function CardManagement({
                         lastFour: e.target.value,
                       }))
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                     placeholder="1234"
                     maxLength={4}
                     pattern="\d{4}"
@@ -206,7 +206,7 @@ export default function CardManagement({
                           expiryMonth: parseInt(e.target.value),
                         }))
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                     >
                       {Array.from({ length: 12 }, (_, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -227,7 +227,7 @@ export default function CardManagement({
                           expiryYear: parseInt(e.target.value),
                         }))
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                     >
                       {Array.from({ length: 10 }, (_, i) => {
                         const year = new Date().getFullYear() + i;
@@ -284,9 +284,7 @@ export default function CardManagement({
                       <span className="text-white text-xs font-bold">CARD</span>
                     </div>
                     <div>
-                      <div className="font-medium text-black">
-                        {card.name}
-                      </div>
+                      <div className="font-medium text-black">{card.name}</div>
                       <div className="text-sm text-black">
                         {card.brand} •••• •••• •••• {card.lastFour}
                       </div>

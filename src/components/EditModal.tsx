@@ -81,7 +81,7 @@ export default function EditModal({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               required
             />
           </div>
@@ -100,7 +100,7 @@ export default function EditModal({
                   price: Number(e.target.value) || 0,
                 }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               min="0"
               required
             />
@@ -120,7 +120,7 @@ export default function EditModal({
                   paymentDay: Number(e.target.value) || 1,
                 }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               min="1"
               max="31"
               required
@@ -140,7 +140,7 @@ export default function EditModal({
                   paymentCycle: e.target.value as PaymentCycle,
                 }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             >
               {Object.entries(PAYMENT_CYCLES).map(([key, cycle]) => (
                 <option key={key} value={key}>
@@ -164,7 +164,7 @@ export default function EditModal({
                     startMonth: Number(e.target.value),
                   }))
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               >
                 <option value={0}>選択してください</option>
                 {Array.from({ length: 12 }, (_, i) => (
@@ -186,7 +186,7 @@ export default function EditModal({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, cardId: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-black"
             >
               <option value="">カードを選択してください</option>
               {cards.map((card) => (
@@ -208,7 +208,7 @@ export default function EditModal({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, url: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               placeholder="https://example.com/account"
             />
           </div>
