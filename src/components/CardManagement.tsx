@@ -131,7 +131,9 @@ export default function CardManagement({
         {/* 追加フォーム */}
         {isAddFormOpen && (
           <div className="mb-6 p-4 border rounded-lg bg-gray-50">
-            <h3 className="text-lg font-medium mb-4 text-black">新しいカードを追加</h3>
+            <h3 className="text-lg font-medium mb-4 text-black">
+              新しいカードを追加
+            </h3>
             <form onSubmit={handleAddCard} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -267,7 +269,9 @@ export default function CardManagement({
 
         {/* カード一覧 */}
         <div>
-          <h3 className="text-lg font-medium mb-4 text-black">登録カード一覧</h3>
+          <h3 className="text-lg font-medium mb-4 text-black">
+            登録カード一覧
+          </h3>
           {cards.length === 0 ? (
             <p className="text-black text-center py-8">
               登録されたカードがありません
